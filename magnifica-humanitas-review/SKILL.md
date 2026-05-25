@@ -1,0 +1,76 @@
+---
+name: magnifica-humanitas-review
+description: Apply the Magnifica Humanitas rubric to any topic, website, company, product, policy, codebase, AI system, institution, or initiative. Produces a densely linked Markdown report with summary, per-metric 0-3 scores, deal-breaker analysis, and a deterministic 0-100 Babel-to-Jerusalem overall score.
+compatibility: Requires Markdown editing and Python 3 for scripts/finalize_score.py.
+metadata:
+  version: "1.0.0"
+---
+
+# Magnifica Humanitas Review
+
+## Use this skill when
+
+Use this skill when the user asks to apply the Magnifica Humanitas rubric, evaluate whether something is closer to Babel or Jerusalem, review a subject through human dignity or common-good principles, or produce a scored ethical/social-impact report for any topic, website, company, product, policy, codebase, AI system, institution, or initiative.
+
+## Non-negotiable template rule
+
+Reports are generated from `assets/report-template.md`.
+
+The template language is literal Markdown plus sparkle pills:
+
+```markdown
+*( describe how well the subject accords with the principle of human dignity )
+```
+
+Treat all text outside sparkle pills and deterministic score marker ranges as locked. Do not rename headings, reorder rows, edit metric names, change source-anchor links, or alter the scoring method. Fill only the sparkle pills. After the metric scores are filled, run `scripts/finalize_score.py REPORT.md --write`; that script may update only the deterministic score marker ranges.
+
+## Workflow
+
+1. Identify the subject, owner, scope, and highest-stakes context. If the user did not provide evidence, gather enough reliable evidence to score honestly. For websites and companies, prefer official pages, policies, filings, documentation, product pages, audits, credible journalism, and regulator/court material. For codebases, inspect relevant files, tests, docs, dependency manifests, CI, security policy, and issue history when available.
+2. Read `references/rubric.md` when you need the scoring scale, metric definitions, section mapping, or deal-breaker flags.
+3. Copy `assets/report-template.md` into the requested output location or into the working draft requested by the user.
+4. Replace every sparkle pill with final report content. Metric score cells must be a bare integer: `0`, `1`, `2`, or `3`.
+5. Make the report densely linked. Each important claim should point to evidence: source pages for public subjects, file paths and line numbers for codebases, or provided documents for private material. If evidence is missing, say so and score conservatively.
+6. Run the deterministic scorer:
+
+```bash
+python3 scripts/finalize_score.py REPORT.md --write
+python3 scripts/finalize_score.py REPORT.md --check
+```
+
+7. Before delivering, confirm that no unresolved sparkle pills remain and that `--check` passes.
+
+## Scoring calibration
+
+- `0`: Harms, contradicts, or ignores the principle. Use this for credible evidence of harm, coercion, deception, exploitation, or high-stakes opacity; also use it when the subject makes strong claims while hiding the evidence needed to verify them.
+- `1`: Names the principle but offers weak, vague, symbolic, or mostly aspirational evidence.
+- `2`: Partly satisfies the principle with meaningful evidence, but important gaps, exclusions, weak enforcement, or unresolved risks remain.
+- `3`: Strongly satisfies the principle with concrete, accountable, current evidence and clear protections for affected people.
+
+The overall score is deterministic:
+
+```text
+overall = round(sum(metric_scores) / 90 * 100, 1)
+```
+
+`0` is Babel: domination, opacity, uniformity, power concentration, and efficiency over dignity. `100` is Jerusalem: dignity, justice, shared responsibility, truth, subsidiarity, solidarity, plural participation, and care for the vulnerable.
+
+## Evidence discipline
+
+- Do not award a `3` for policy language alone. Look for implementation, accountability, independent verification, user/worker recourse, metrics, audits, enforcement, or code behavior.
+- Distinguish "no evidence found" from "negative evidence found." Both may lower a score, but the rationale should say which one applies.
+- For codebases, cite concrete files and behavior. Avoid judging intent when only implementation evidence is available.
+- For websites or companies, separate the subject's own claims from outside evidence and controversies.
+- If the subject is broad, state the review boundary and avoid pretending the score covers areas not investigated.
+- If a deal-breaker flag is present, call it out in the summary even when the arithmetic score is moderate.
+
+## Output contract
+
+Return a Markdown report based on `assets/report-template.md` with:
+
+- A summary at the top.
+- A deterministic overall score normalized from 0 (Babel) to 100 (Jerusalem).
+- A score for each of the 30 metrics.
+- Linked evidence for every metric.
+- Deal-breaker flags and concrete actions required.
+- The deterministic score block generated by `scripts/finalize_score.py`.
