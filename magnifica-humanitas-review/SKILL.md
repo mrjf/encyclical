@@ -26,7 +26,7 @@ Treat all text outside sparkle pills and deterministic score marker ranges as lo
 
 ## Workflow
 
-1. Identify the subject, owner, scope, and highest-stakes context. If the user did not provide evidence, gather enough reliable evidence to score honestly. For websites and companies, prefer official pages, policies, filings, documentation, product pages, audits, credible journalism, and regulator/court material. For codebases, inspect relevant files, tests, docs, dependency manifests, CI, security policy, and issue history when available.
+1. Identify the subject, owner, scope, and highest-stakes context. If the user did not provide evidence, gather enough reliable evidence to score honestly. When running interactively and able to solicit user input, ask the user for missing context or evidence whenever you lack a basis to assign a score to a category. If you cannot ask the user, do your best to research reliable answers; state plainly when information is insufficient and choose `n/a` when you still cannot determine that the category applies. For websites and companies, prefer official pages, policies, filings, documentation, product pages, audits, credible journalism, and regulator/court material. For codebases, inspect relevant files, tests, docs, dependency manifests, CI, security policy, and issue history when available.
 2. Read `references/rubric.md` when you need the scoring scale, metric definitions, section mapping, or deal-breaker flags.
 3. Copy `assets/report-template.md` into the requested output location or into the working draft requested by the user.
 4. Replace every sparkle pill with final report content. Metric score cells must be a bare integer `0`, `1`, `2`, or `3`, or `n/a` when the category does not apply.
@@ -46,7 +46,7 @@ python3 scripts/finalize_score.py REPORT.md --check
 - `1`: Names the principle but offers weak, vague, symbolic, or mostly aspirational evidence.
 - `2`: Partly satisfies the principle with meaningful evidence, but important gaps, exclusions, weak enforcement, or unresolved risks remain.
 - `3`: Strongly satisfies the principle with concrete, accountable, current evidence and clear protections for affected people.
-- `n/a`: The category does not apply to this subject. Use this when a metric is genuinely irrelevant to the thing being reviewed.
+- `n/a`: The category does not apply to this subject. Use this when a metric is genuinely irrelevant to the thing being reviewed, or when you cannot establish that the category applies after asking the user when possible and otherwise researching in good faith.
 
 The overall score is deterministic:
 
