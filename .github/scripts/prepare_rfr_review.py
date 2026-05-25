@@ -12,7 +12,6 @@ from typing import Any
 REQUEST_LABEL = "request-for-review"
 APPROVAL_LABEL = "approved-for-review"
 APPROVER = "mrjf"
-COMMENT_MARKER = "<!-- magnifica-humanitas-request-for-review -->"
 
 
 def extract_issue_labels(issue: dict[str, Any]) -> set[str]:
