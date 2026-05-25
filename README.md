@@ -16,6 +16,8 @@ Use the [**Magnifica Humanitas Review** issue template](.github/ISSUE_TEMPLATE/m
 
 To use it: go to **Issues → New Issue → Magnifica Humanitas Review** in this repository.
 
+When a review issue is opened or edited, the [`score-review-issue`](.github/workflows/score-review-issue.yml) GitHub Actions workflow parses the 30 dropdown scores and posts (or updates) a comment with the deterministic overall score, per-section breakdown, and Babel-to-Jerusalem orientation band.
+
 ## For AI Agents
 
 The [`magnifica-humanitas-review/`](magnifica-humanitas-review/) directory contains an agent skill that automates the same evaluation. It produces a densely linked Markdown report with per-metric 0–3 scores, deal-breaker analysis, and a deterministic 0–100 overall score.

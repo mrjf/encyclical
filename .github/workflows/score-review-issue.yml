@@ -1,0 +1,55 @@
+name: Score Magnifica Humanitas review
+
+on:
+  issues:
+    types: [opened, edited, reopened, labeled]
+
+permissions:
+  issues: write
+  contents: read
+
+jobs:
+  score:
+    if: contains(github.event.issue.labels.*.name, 'magnifica-humanitas-review')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Render score comment
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$ISSUE_BODY" > issue-body.md
+          python3 .github/scripts/score_review_issue.py issue-body.md > comment.md
+          echo "--- rendered comment ---"
+          cat comment.md
+
+      - name: Upsert score comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          marker='<!-- magnifica-humanitas-score -->'
+          existing_id=$(
+            gh api --paginate "repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+              --jq ".[] | select(.body | startswith(\"$marker\")) | .id" \
+              | head -n1
+          )
+          if [ -n "$existing_id" ]; then
+            echo "Updating existing score comment $existing_id"
+            gh api -X PATCH "repos/$REPO/issues/comments/$existing_id" \
+              -F body=@comment.md >/dev/null
+          else
+            echo "Posting new score comment"
+            gh api -X POST "repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+              -F body=@comment.md >/dev/null
+          fi
