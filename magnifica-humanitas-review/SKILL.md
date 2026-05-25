@@ -29,7 +29,7 @@ Treat all text outside sparkle pills and deterministic score marker ranges as lo
 1. Identify the subject, owner, scope, and highest-stakes context. If the user did not provide evidence, gather enough reliable evidence to score honestly. For websites and companies, prefer official pages, policies, filings, documentation, product pages, audits, credible journalism, and regulator/court material. For codebases, inspect relevant files, tests, docs, dependency manifests, CI, security policy, and issue history when available.
 2. Read `references/rubric.md` when you need the scoring scale, metric definitions, section mapping, or deal-breaker flags.
 3. Copy `assets/report-template.md` into the requested output location or into the working draft requested by the user.
-4. Replace every sparkle pill with final report content. Metric score cells must be a bare integer: `0`, `1`, `2`, or `3`.
+4. Replace every sparkle pill with final report content. Metric score cells must be a bare integer `0`, `1`, `2`, or `3`, or `n/a` when the category does not apply.
 5. Make the report densely linked. Each important claim should point to evidence: source pages for public subjects, file paths and line numbers for codebases, or provided documents for private material. If evidence is missing, say so and score conservatively.
 6. Run the deterministic scorer:
 
@@ -46,12 +46,15 @@ python3 scripts/finalize_score.py REPORT.md --check
 - `1`: Names the principle but offers weak, vague, symbolic, or mostly aspirational evidence.
 - `2`: Partly satisfies the principle with meaningful evidence, but important gaps, exclusions, weak enforcement, or unresolved risks remain.
 - `3`: Strongly satisfies the principle with concrete, accountable, current evidence and clear protections for affected people.
+- `n/a`: The category does not apply to this subject. Use this when a metric is genuinely irrelevant to the thing being reviewed.
 
 The overall score is deterministic:
 
 ```text
-overall = round(sum(metric_scores) / 90 * 100, 1)
+overall = round(sum(scored_metrics) / (scored_count * 3) * 100, 1)
 ```
+
+Metrics marked `n/a` are excluded from the sum and the denominator, so the score still normalizes to 0-100.
 
 `0` is Babel: domination, opacity, uniformity, power concentration, and efficiency over dignity. `100` is Jerusalem: dignity, justice, shared responsibility, truth, subsidiarity, solidarity, plural participation, and care for the vulnerable.
 

@@ -8,6 +8,7 @@ Use this reference when filling `assets/report-template.md`.
 - `1`: Names the principle but offers weak or mostly symbolic evidence.
 - `2`: Partly satisfies the principle with meaningful but incomplete practices.
 - `3`: Strongly satisfies the principle with concrete, accountable evidence.
+- `n/a`: The category does not apply to this subject. Metrics marked `n/a` are excluded from the overall score normalization, which still ranges from 0 to 100.
 
 ## Summary test
 

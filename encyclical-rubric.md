@@ -12,6 +12,7 @@ Use this scale for each criterion:
 - `1` - Names the principle but offers weak or mostly symbolic evidence.
 - `2` - Partly satisfies the principle with meaningful but incomplete practices.
 - `3` - Strongly satisfies the principle with concrete, accountable evidence.
+- `n/a` - The category does not apply to this subject. Metrics marked `n/a` are excluded from score normalization.
 
 For a quick read, average scores within each section. For a deeper review, record the evidence behind each score and note unresolved risks.
 
