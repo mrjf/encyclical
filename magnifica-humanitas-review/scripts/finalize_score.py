@@ -284,7 +284,7 @@ def run_self_test() -> None:
         ]
     )
     summary_na = summarize(parse_scores(fixture_na))
-    # 27 metrics scored at 2, max = 27*3 = 81, total = 54
+    # 27 metrics scored at 2 each: total = 27*2 = 54, max = 27*3 = 81
     # overall = round(54/81*100, 1) = 66.7
     if summary_na["overall_score"] != 66.7:
         raise AssertionError(f"n/a test: expected 66.7, got {summary_na['overall_score']}")
