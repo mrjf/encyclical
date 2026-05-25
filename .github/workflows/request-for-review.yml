@@ -33,7 +33,9 @@ jobs:
 
       - name: Install default agent CLI
         if: ${{ vars.RFR_AGENT_COMMAND == '' }}
-        run: npm install -g @openai/codex@0.133.0
+        run: |
+          npm install -g @openai/codex@0.133.0
+          codex --version
 
       - name: Prepare non-interactive review prompt
         run: |
