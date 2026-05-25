@@ -1,0 +1,89 @@
+name: Request for Review
+
+on:
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: read
+  issues: write
+
+jobs:
+  review:
+    if: >-
+      github.event.action == 'labeled' &&
+      github.event.label.name == 'approved-for-review' &&
+      github.event.sender.login == 'mrjf' &&
+      contains(github.event.issue.labels.*.name, 'request-for-review')
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Set up Node for default agent
+        if: ${{ vars.RFR_AGENT_COMMAND == '' }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install default agent CLI
+        if: ${{ vars.RFR_AGENT_COMMAND == '' }}
+        run: npm install -g @openai/codex@0.133.0
+
+      - name: Prepare non-interactive review prompt
+        run: |
+          set -euo pipefail
+          python3 .github/scripts/prepare_rfr_review.py \
+            --event "$GITHUB_EVENT_PATH" \
+            --prompt rfr-prompt.md \
+            --body rfr-issue-body.md \
+            --report rfr-report.md
+
+      - name: Run agentic review
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          RFR_AGENT_COMMAND: ${{ vars.RFR_AGENT_COMMAND }}
+        run: |
+          set -euo pipefail
+          if [ -n "${RFR_AGENT_COMMAND:-}" ]; then
+            command="$RFR_AGENT_COMMAND"
+          else
+            command='codex exec --cd "$PWD" --sandbox workspace-write --ask-for-approval never - < rfr-prompt.md'
+          fi
+          echo "Running configured non-interactive review agent"
+          bash -c "$command"
+          test -s rfr-report.md
+          python3 magnifica-humanitas-review/scripts/finalize_score.py rfr-report.md --check
+
+      - name: Post review comment
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          REPO: ${{ github.repository }}
+        run: |
+          set -euo pipefail
+          marker='<!-- magnifica-humanitas-request-for-review -->'
+          {
+            echo "$marker"
+            cat rfr-report.md
+          } > rfr-comment.md
+          existing_id=$(
+            gh api --paginate "repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+              --jq ".[] | select(.body | startswith(\"$marker\")) | .id" \
+              | head -n1
+          )
+          if [ -n "$existing_id" ]; then
+            echo "Updating existing Request for Review comment $existing_id"
+            gh api -X PATCH "repos/$REPO/issues/comments/$existing_id" \
+              -F body=@rfr-comment.md >/dev/null
+          else
+            echo "Posting new Request for Review comment"
+            gh api -X POST "repos/$REPO/issues/$ISSUE_NUMBER/comments" \
+              -F body=@rfr-comment.md >/dev/null
+          fi

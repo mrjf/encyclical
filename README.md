@@ -18,6 +18,8 @@ To use it: go to **Issues → New Issue → Magnifica Humanitas Review** in this
 
 When a review issue is opened or edited, the [`score-review-issue`](.github/workflows/score-review-issue.yml) GitHub Actions workflow parses the 30 dropdown scores and posts (or updates) a comment with the deterministic overall score, per-section breakdown, and Babel-to-Jerusalem orientation band.
 
+Use the [**Request for Review** issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) to ask for a full agentic review. The requester should say what they want reviewed and include relevant URLs when available. The [`request-for-review`](.github/workflows/request-for-review.yml) workflow runs only when @mrjf applies `approved-for-review` to an issue labeled `request-for-review`; it runs the bundled skill non-interactively and posts the report back to the issue.
+
 ## For AI Agents
 
 The [`magnifica-humanitas-review/`](magnifica-humanitas-review/) directory contains an agent skill that automates the same evaluation. It produces a densely linked Markdown report with per-metric 0–3 scores, deal-breaker analysis, and a deterministic 0–100 overall score.

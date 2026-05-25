@@ -1,0 +1,46 @@
+name: Request for Review
+description: Ask for an agentic Magnifica Humanitas review.
+title: "Request for Review: "
+labels: ["request-for-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        # Request for Review
+
+        Use this template to request a full agentic Magnifica Humanitas review of a tool, project, policy, company, product, AI system, institution, initiative, website, or codebase.
+
+        After the issue is opened, @mrjf must apply the `approved-for-review` label before the automated review will run.
+
+  - type: input
+    id: review-subject
+    attributes:
+      label: Review subject
+      placeholder: e.g. Acme Corp AI Hiring Tool v2.1
+    validations:
+      required: true
+
+  - type: textarea
+    id: review-request
+    attributes:
+      label: What do you want reviewed?
+      description: Describe the review boundary, highest-stakes questions, and anything that should be in or out of scope.
+      placeholder: Please review the public product, privacy practices, and documented governance controls.
+    validations:
+      required: true
+
+  - type: textarea
+    id: urls
+    attributes:
+      label: Relevant URLs
+      description: Provide official pages, docs, repos, filings, news coverage, or other sources where appropriate.
+      placeholder: |
+        https://example.com/product
+        https://example.com/docs
+
+  - type: textarea
+    id: context
+    attributes:
+      label: Additional context
+      description: Add any affected communities, known risks, constraints, or background that may help the non-interactive review.
+      placeholder: The agent cannot ask follow-up questions, so include any context it should know up front.
