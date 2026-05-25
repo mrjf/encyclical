@@ -10,7 +10,7 @@ body:
 
         Use this template to evaluate any tool, project, policy, company, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20250515-magnifica-humanitas.html).
 
-        **Scoring scale:** `0` harms or ignores the principle · `1` weak or symbolic · `2` meaningful but incomplete · `3` strong, concrete, accountable evidence.
+        **Scoring scale:** `0` harms or ignores the principle · `1` weak or symbolic · `2` meaningful but incomplete · `3` strong, concrete, accountable evidence · `N/A` the category does not apply to this subject.
 
         **Summary test:** Is this building Babel (domination, opacity, power concentration) or rebuilding Jerusalem (dignity, justice, shared responsibility)?
 
@@ -63,8 +63,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-1
@@ -81,8 +82,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-2
@@ -99,8 +101,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-3
@@ -121,8 +124,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-4
@@ -139,8 +143,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-5
@@ -157,8 +162,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-6
@@ -179,8 +185,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-7
@@ -197,8 +204,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-8
@@ -215,8 +223,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-9
@@ -237,8 +246,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-10
@@ -255,8 +265,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-11
@@ -273,8 +284,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-12
@@ -295,8 +307,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-13
@@ -313,8 +326,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-14
@@ -331,8 +345,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-15
@@ -353,8 +368,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-16
@@ -371,8 +387,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-17
@@ -389,8 +406,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-18
@@ -411,8 +429,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-19
@@ -429,8 +448,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-20
@@ -447,8 +467,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-21
@@ -469,8 +490,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-22
@@ -487,8 +509,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-23
@@ -505,8 +528,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-24
@@ -527,8 +551,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-25
@@ -545,8 +570,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-26
@@ -563,8 +589,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-27
@@ -585,8 +612,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-28
@@ -603,8 +631,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-29
@@ -621,8 +650,9 @@ body:
         - "1 – Weak or symbolic"
         - "2 – Meaningful but incomplete"
         - "3 – Strong and accountable"
+        - "N/A – Does not apply"
     validations:
-      required: true
+      required: false
 
   - type: textarea
     id: evidence-30
