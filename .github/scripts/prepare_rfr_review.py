@@ -15,7 +15,7 @@ APPROVER = "mrjf"
 COMMENT_MARKER = "<!-- magnifica-humanitas-request-for-review -->"
 
 
-def issue_labels(issue: dict[str, Any]) -> set[str]:
+def extract_issue_labels(issue: dict[str, Any]) -> set[str]:
     return {label.get("name", "") for label in issue.get("labels", [])}
 
 
@@ -28,7 +28,7 @@ def should_run_review(event: dict[str, Any]) -> tuple[bool, str]:
         return False, f"event label is not {APPROVAL_LABEL}"
     if event.get("sender", {}).get("login") != APPROVER:
         return False, f"{APPROVAL_LABEL} was not applied by @{APPROVER}"
-    if REQUEST_LABEL not in issue_labels(event.get("issue", {})):
+    if REQUEST_LABEL not in extract_issue_labels(event.get("issue", {})):
         return False, f"issue does not have {REQUEST_LABEL}"
     return True, "approved request-for-review issue"
 
