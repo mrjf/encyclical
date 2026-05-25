@@ -13,9 +13,9 @@ body:
         After the issue is opened, @mrjf must apply the `approved-for-review` label before the automated review will run.
 
   - type: input
-    id: subject
+    id: review-subject
     attributes:
-      label: What should be reviewed?
+      label: Review subject
       placeholder: e.g. Acme Corp AI Hiring Tool v2.1
     validations:
       required: true
