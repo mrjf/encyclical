@@ -145,7 +145,7 @@ def build_prompt(paths: dict[str, Path]) -> str:
         - Do not modify files outside the test workspace.
         - Preserve template text outside sparkle pills and deterministic score marker ranges.
         - Replace every sparkle pill with final content.
-        - Every scorecard score cell must be a bare integer: 0, 1, 2, or 3.
+        - Every scorecard score cell must be a bare integer 0, 1, 2, or 3, or n/a when the category does not apply.
         - Link report claims to the local subject evidence file where possible.
         - Finish only after the deterministic scorer command succeeds.
         """

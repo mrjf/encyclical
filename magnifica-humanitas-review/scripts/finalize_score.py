@@ -68,23 +68,25 @@ def split_markdown_row(line: str) -> list[str]:
     return [cell.strip() for cell in stripped.strip("|").split("|")]
 
 
-def parse_score_cell(cell: str, metric_number: int) -> int:
+def parse_score_cell(cell: str, metric_number: int) -> int | None:
     normalized = cell.replace("`", "").strip()
     if "*(" in normalized:
         raise ScoreError(
             f"Metric {metric_number} still has an unresolved score placeholder: {cell}"
         )
+    if re.fullmatch(r"n/?a", normalized, re.I):
+        return None
     match = re.fullmatch(r"(?:score\s*[:=]\s*)?([0-3])(?:\s*/\s*3)?", normalized, re.I)
     if not match:
         raise ScoreError(
-            f"Metric {metric_number} score must be a bare integer 0, 1, 2, or 3; got: {cell}"
+            f"Metric {metric_number} score must be 0, 1, 2, 3, or n/a; got: {cell}"
         )
     return int(match.group(1))
 
 
-def parse_scores(markdown: str) -> dict[int, int]:
+def parse_scores(markdown: str) -> dict[int, int | None]:
     scorecard = extract_between(markdown, SCORECARD_START, SCORECARD_END)
-    scores: dict[int, int] = {}
+    scores: dict[int, int | None] = {}
 
     for line in scorecard.splitlines():
         cells = split_markdown_row(line)
@@ -118,23 +120,32 @@ def orientation_band(overall_score: float) -> str:
     return "Jerusalem"
 
 
-def summarize(scores: dict[int, int]) -> dict[str, object]:
-    total = sum(scores.values())
-    overall = round(total / MAX_TOTAL * 100, 1)
+def summarize(scores: dict[int, int | None]) -> dict[str, object]:
+    scored_values = [v for v in scores.values() if v is not None]
+    scored_count = len(scored_values)
+    if scored_count == 0:
+        raise ScoreError("All metrics are n/a; at least one must be scored")
+    total = sum(scored_values)
+    max_total = scored_count * MAX_PER_METRIC
+    overall = round(total / max_total * 100, 1)
 
     sections = []
     for section_name, metric_range in SECTION_RANGES:
         metric_numbers = list(metric_range)
-        section_total = sum(scores[number] for number in metric_numbers)
-        section_max = len(metric_numbers) * MAX_PER_METRIC
+        section_scored = [scores[n] for n in metric_numbers if scores[n] is not None]
+        section_scored_count = len(section_scored)
+        section_total = sum(section_scored)
+        section_max = section_scored_count * MAX_PER_METRIC
+        na_count = len(metric_numbers) - section_scored_count
         sections.append(
             {
                 "section": section_name,
                 "metrics": f"{metric_numbers[0]}-{metric_numbers[-1]}",
                 "raw_score": section_total,
                 "raw_max": section_max,
-                "average": round(section_total / len(metric_numbers), 2),
-                "normalized": round(section_total / section_max * 100, 1),
+                "average": round(section_total / section_scored_count, 2) if section_scored_count else "n/a",
+                "normalized": round(section_total / section_max * 100, 1) if section_scored_count else "n/a",
+                "na_count": na_count,
             }
         )
 
@@ -142,27 +153,41 @@ def summarize(scores: dict[int, int]) -> dict[str, object]:
         "overall_score": overall,
         "orientation_band": orientation_band(overall),
         "raw_score": total,
-        "raw_max": MAX_TOTAL,
+        "raw_max": max_total,
         "metric_count": METRIC_COUNT,
+        "scored_count": scored_count,
+        "na_count": METRIC_COUNT - scored_count,
         "sections": sections,
-        "scores": {str(number): scores[number] for number in range(1, METRIC_COUNT + 1)},
+        "scores": {
+            str(number): scores[number] if scores[number] is not None else "n/a"
+            for number in range(1, METRIC_COUNT + 1)
+        },
     }
 
 
 def render_score_block(summary: dict[str, object]) -> str:
+    na_count = summary.get("na_count", 0)
     lines = [
         f"**Overall score:** {summary['overall_score']:.1f}/100",
         f"**Raw score:** {summary['raw_score']}/{summary['raw_max']}",
         f"**Orientation band:** {summary['orientation_band']}",
-        "",
-        "| Section | Metrics | Raw score | Average /3 | Normalized /100 |",
-        "|---|---:|---:|---:|---:|",
     ]
+    if na_count:
+        lines.append(f"**Scored metrics:** {summary['scored_count']}/{summary['metric_count']} ({na_count} n/a)")
+    lines.extend(
+        [
+            "",
+            "| Section | Metrics | Raw score | Average /3 | Normalized /100 |",
+            "|---|---:|---:|---:|---:|",
+        ]
+    )
     for section in summary["sections"]:
+        avg = section["average"]
+        norm = section["normalized"]
+        avg_str = f"{avg:.2f}" if isinstance(avg, (int, float)) else avg
+        norm_str = f"{norm:.1f}" if isinstance(norm, (int, float)) else norm
         lines.append(
-            "| {section} | {metrics} | {raw_score}/{raw_max} | {average:.2f} | {normalized:.1f} |".format(
-                **section
-            )
+            f"| {section['section']} | {section['metrics']} | {section['raw_score']}/{section['raw_max']} | {avg_str} | {norm_str} |"
         )
     return "\n".join(lines)
 
@@ -199,6 +224,7 @@ def load_report(path_arg: str) -> tuple[str, Path | None]:
 
 
 def run_self_test() -> None:
+    # Test 1: all metrics scored (original test)
     rows = [
         SCORECARD_START,
         "| # | Metric | Score | Assessment and evidence | Principle links |",
@@ -224,8 +250,51 @@ def run_self_test() -> None:
     summary = summarize(parse_scores(fixture))
     if summary["overall_score"] != 66.7:
         raise AssertionError(f"Expected 66.7, got {summary['overall_score']}")
+    if summary["na_count"] != 0:
+        raise AssertionError(f"Expected 0 n/a, got {summary['na_count']}")
     updated = update_report(fixture, summary)
     check_report(updated, summary)
+
+    # Test 2: some metrics are n/a
+    rows_na = [
+        SCORECARD_START,
+        "| # | Metric | Score | Assessment and evidence | Principle links |",
+        "|---:|---|---:|---|---|",
+    ]
+    for number in range(1, METRIC_COUNT + 1):
+        if number in (22, 23, 24):
+            rows_na.append(
+                f"| {number} | Metric {number} | `n/a` | Not applicable | Links |"
+            )
+        else:
+            rows_na.append(
+                f"| {number} | Metric {number} | `2` | Evidence | Links |"
+            )
+    rows_na.append(SCORECARD_END)
+    fixture_na = "\n".join(
+        [
+            "- **Overall score:** "
+            + OVERALL_START
+            + "*( deterministic overall score )"
+            + OVERALL_END,
+            BLOCK_START,
+            "*( deterministic score block )",
+            BLOCK_END,
+            *rows_na,
+        ]
+    )
+    summary_na = summarize(parse_scores(fixture_na))
+    # 27 metrics scored at 2 each: total = 27*2 = 54, max = 27*3 = 81
+    # overall = round(54/81*100, 1) = 66.7
+    if summary_na["overall_score"] != 66.7:
+        raise AssertionError(f"n/a test: expected 66.7, got {summary_na['overall_score']}")
+    if summary_na["na_count"] != 3:
+        raise AssertionError(f"n/a test: expected 3 n/a, got {summary_na['na_count']}")
+    if summary_na["scored_count"] != 27:
+        raise AssertionError(f"n/a test: expected 27 scored, got {summary_na['scored_count']}")
+    updated_na = update_report(fixture_na, summary_na)
+    check_report(updated_na, summary_na)
+
     print("self-test passed")
 
 
