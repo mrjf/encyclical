@@ -13,14 +13,16 @@ Evaluate a tool, policy, product, AI system, institution, or initiative against 
 
 ## 01. Start here
 
-Choose the path that matches the work.
+First, read [the encyclical](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20250515-magnifica-humanitas.html).
+
+Next, choose how you'd like to use its principles to evaluate a subject.
 
 | Path | Use when | File or workflow |
 | --- | --- | --- |
-| Worksheet | You want a manual review with no AI required | [`magnifica-humanitas-review-worksheet.md`](magnifica-humanitas-review-worksheet.md) |
-| Issue review | You want to submit scored answers in GitHub | [Magnifica Humanitas Review issue template](.github/ISSUE_TEMPLATE/magnifica-humanitas-review.yml) |
-| Agentic review | You want an approved non-interactive agent report | [Request for Review issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) |
-| Agent skill | You want to run the bundled review skill directly | [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md) |
+| Worksheet | Write a review in a Markdown worksheet | [`magnifica-humanitas-review-worksheet.md`](magnifica-humanitas-review-worksheet.md) |
+| Issue review | Write a review in a GitHub issue | [Magnifica Humanitas Review issue template](https://github.com/mrjf/encyclical/issues/new?template=magnifica-humanitas-review.yml)) |
+| Agentic review | Request an agent-written report in an issue | [Request for Review issue template]((https://github.com/mrjf/encyclical/issues/new?template=request-for-review.yml)) |
+| Agent skill | The Agent Skill source  | [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md) |
 
 ---
 
@@ -44,21 +46,25 @@ When a review issue is opened or edited, [`score-review-issue`](.github/workflow
 
 ## 04. Agentic review
 
-Use the [Request for Review issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) when you want a full agentic review.
+Use the [Request for Review issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) when you want a full agentic review (on my dime).
 
-Include the review boundary, the highest-stakes questions, and relevant URLs. The requester should provide enough context for a non-interactive run.
+Include the review boundary, the highest-stakes questions, and relevant URLs. The requester should provide enough context for a non-interactive run, since the agent can't ask you any questions once you submit. Works best for public projects the agent can research on its own.
 
-The [`request-for-review`](.github/workflows/request-for-review.yml) workflow runs only after @mrjf applies `approved-for-review` to an issue labeled `request-for-review`.
+The [`request-for-review`](.github/workflows/request-for-review.yml) workflow runs only after admin approval, since the consumed inference is charged to the repo owner.
 
 ---
 
 ## 05. For agents
 
-The [`magnifica-humanitas-review/`](magnifica-humanitas-review/) directory contains the review skill.
+Ask your agent:
+
+```text
+Use https://github.com/mrjf/encyclical/blob/main/magnifica-humanitas-review/SKILL.md to help me review ...
+```
+
+Or take the skill and install it: [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md)
 
 It produces a densely linked Markdown report with per-metric scores, deal-breaker analysis, and the deterministic `0`–`100` score.
-
-Read [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md) before running or editing the skill.
 
 ---
 
@@ -66,5 +72,5 @@ Read [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md
 
 | File | Purpose |
 | --- | --- |
-| [`encyclical-summary.md`](encyclical-summary.md) | Secular summary of the encyclical’s core arguments |
+| [`encyclical-summary.md`](encyclical-summary.md) | Summary of the encyclical’s core arguments |
 | [`encyclical-rubric.md`](encyclical-rubric.md) | Full 30-criterion rubric, evidence guidance, and deal-breaker flags |
