@@ -1,32 +1,70 @@
 # Magnifica Humanitas Evaluation
 
-Evaluate any tool, project, policy, company, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20250515-magnifica-humanitas.html). Score 30 criteria on a 0–3 scale and produce a Babel-to-Jerusalem overall score from 0 to 100.
+Evaluate a tool, policy, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20250515-magnifica-humanitas.html).
 
-## For People
+| Field | Value |
+| --- | --- |
+| Method | 30 criteria scored from `0` to `3` |
+| Output | A deterministic Babel-to-Jerusalem score from `0` to `100` |
+| Use cases | Manual worksheets, GitHub issue reviews, agentic reports |
+| Core question | Does this build Babel or help rebuild Jerusalem? |
 
-No AI required. Two ways to conduct a review yourself:
+---
 
-### Worksheet
+## 01. Start here
 
-[**magnifica-humanitas-review-worksheet.md**](magnifica-humanitas-review-worksheet.md) — Copy this markdown file and fill it out. It walks you through every evaluation question, asks for a score and evidence for each of the 30 metrics, and produces a summary with section averages, deal-breaker flags, and an overall Babel-to-Jerusalem score.
+Choose the path that matches the work.
 
-### Issue Template
+| Path | Use when | File or workflow |
+| --- | --- | --- |
+| Worksheet | You want a manual review with no AI required | [`magnifica-humanitas-review-worksheet.md`](magnifica-humanitas-review-worksheet.md) |
+| Issue review | You want to submit scored answers in GitHub | [Magnifica Humanitas Review issue template](.github/ISSUE_TEMPLATE/magnifica-humanitas-review.yml) |
+| Agentic review | You want an approved non-interactive agent report | [Request for Review issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) |
+| Agent skill | You want to run the bundled review skill directly | [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md) |
 
-Use the [**Magnifica Humanitas Review** issue template](.github/ISSUE_TEMPLATE/magnifica-humanitas-review.yml) to submit a review as a GitHub issue. The template asks the same 30 questions as dropdown scores with space for evidence, and collects your summary judgment.
+---
 
-To use it: go to **Issues → New Issue → Magnifica Humanitas Review** in this repository.
+## 02. Manual review
 
-When a review issue is opened or edited, the [`score-review-issue`](.github/workflows/score-review-issue.yml) GitHub Actions workflow parses the 30 dropdown scores and posts (or updates) a comment with the deterministic overall score, per-section breakdown, and Babel-to-Jerusalem orientation band.
+Copy [`magnifica-humanitas-review-worksheet.md`](magnifica-humanitas-review-worksheet.md) and fill it out.
 
-Use the [**Request for Review** issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) to ask for a full agentic review. The requester should say what they want reviewed and include relevant URLs when available. The [`request-for-review`](.github/workflows/request-for-review.yml) workflow runs only when @mrjf applies `approved-for-review` to an issue labeled `request-for-review`; it runs the bundled skill non-interactively and posts the report back to the issue.
+The worksheet walks through all 30 metrics, asks for score evidence, and produces section averages, deal-breaker flags, and an overall Babel-to-Jerusalem score.
 
-## For AI Agents
+---
 
-The [`magnifica-humanitas-review/`](magnifica-humanitas-review/) directory contains an agent skill that automates the same evaluation. It produces a densely linked Markdown report with per-metric 0–3 scores, deal-breaker analysis, and a deterministic 0–100 overall score.
+## 03. GitHub issue review
 
-See [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md) for the full skill specification.
+Open **Issues → New Issue → Magnifica Humanitas Review**.
 
-## Background
+The issue template asks the same 30 questions as dropdown scores with room for evidence and summary judgment.
 
-- [**encyclical-summary.md**](encyclical-summary.md) — A secular summary of the encyclical's core arguments.
-- [**encyclical-rubric.md**](encyclical-rubric.md) — The full 30-criterion evaluation rubric with evaluation questions, evidence guidance, and deal-breaker flags.
+When a review issue is opened or edited, [`score-review-issue`](.github/workflows/score-review-issue.yml) parses the dropdown scores and posts or updates the deterministic score comment.
+
+---
+
+## 04. Agentic review
+
+Use the [Request for Review issue template](.github/ISSUE_TEMPLATE/request-for-review.yml) when you want a full agentic review.
+
+Include the review boundary, the highest-stakes questions, and relevant URLs. The requester should provide enough context for a non-interactive run.
+
+The [`request-for-review`](.github/workflows/request-for-review.yml) workflow runs only after @mrjf applies `approved-for-review` to an issue labeled `request-for-review`.
+
+---
+
+## 05. For agents
+
+The [`magnifica-humanitas-review/`](magnifica-humanitas-review/) directory contains the review skill.
+
+It produces a densely linked Markdown report with per-metric scores, deal-breaker analysis, and the deterministic `0`–`100` score.
+
+Read [`magnifica-humanitas-review/SKILL.md`](magnifica-humanitas-review/SKILL.md) before running or editing the skill.
+
+---
+
+## 06. Reference
+
+| File | Purpose |
+| --- | --- |
+| [`encyclical-summary.md`](encyclical-summary.md) | Secular summary of the encyclical’s core arguments |
+| [`encyclical-rubric.md`](encyclical-rubric.md) | Full 30-criterion rubric, evidence guidance, and deal-breaker flags |
