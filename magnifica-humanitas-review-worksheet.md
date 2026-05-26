@@ -1,6 +1,6 @@
 # Magnifica Humanitas Review Worksheet
 
-Use this worksheet to evaluate any tool, project, policy, company, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20250515-magnifica-humanitas.html).
+Use this worksheet to evaluate any tool, project, policy, company, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html).
 
 Fill in each section honestly. For every metric, assign a score from 0 to 3 and explain your reasoning with concrete evidence.
 
