@@ -1,6 +1,6 @@
 # Magnifica Humanitas Evaluation
 
-Evaluate a tool, policy, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20250515-magnifica-humanitas.html).
+Evaluate a tool, policy, product, AI system, institution, or initiative against the principles of [*Magnifica Humanitas*](https://www.vatican.va/content/leo-xiv/en/encyclicals/documents/20260515-magnifica-humanitas.html).
 
 | Field | Value |
 | --- | --- |
